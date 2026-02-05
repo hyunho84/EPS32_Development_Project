@@ -2,17 +2,24 @@
 # Step Motor Control Test
 
 from drivers.stepper_motor import StepperMotor
+from drivers.jmod_temp_sensor import JmodTempSensor
 from services.controller import Controller
+import time
 
 print("ESP32 Step Motor Test")
 
 motor = StepperMotor()
-controller = Controller(motor)
+temp = JmodTempSensor()
+controller = Controller(motor, temp)
 
-i = 0
+while True:
+  temp_sensor = temp.read_temp_sensor()     # 온도 읽기
+  
+  if temp_sensor is not None:
+    print("현재 온도는 {}도 입니다.".format(temp_sensor))
+  else:
+    print("경고: 센서 연결 상태를 확인해 주세요!")
+  
+  controller.check_temperature_and_act(temp_sensor, 512)
 
-while i < 2:
-  motor.rotate_left(512)
-  motor.rotate_right(512)
-  i += 1
-  print(i)
+  time.sleep(1) 
