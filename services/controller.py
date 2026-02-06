@@ -1,9 +1,10 @@
-from config.settings import TEMP_THRESHOLD
+from config.settings import TEMP_THRESHOLD, LED_COUNT
 
 class Controller:
-  def __init__(self, motor, temp):
+  def __init__(self, motor, temp, led_lamp):
     self.motor = motor
     self.temp = temp
+    self.led_lamp = led_lamp
     print("Controller __init__ Start")
   
   def rotate_left_once(self, step):
@@ -19,3 +20,6 @@ class Controller:
       self.rotate_right_once(step)
     else:
       print(f"[Controller] 온도 {temp_sensor}°C → 모터 정지")
+  
+  def led_on(self):
+    self.led_lamp.led_grean_on(LED_COUNT)
