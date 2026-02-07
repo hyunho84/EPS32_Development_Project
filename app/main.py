@@ -4,25 +4,34 @@
 from drivers.stepper_motor import StepperMotor
 from drivers.jmod_temp_sensor import JmodTempSensor
 from drivers.cjmcu_led import Cjmcu_Led
-from services.controller import Controller
+from services.motor_controller import StepperController
+import uasyncio as asyncio
 import time
 
 print("ESP32 Step Motor Test")
 
 motor = StepperMotor()
+step_motor_controller = StepperController(motor)
 temp = JmodTempSensor()
 led_lamp = Cjmcu_Led()
-controller = Controller(motor, temp, led_lamp)
 
-while True:
-  temp_sensor = temp.read_temp_sensor()     # 온도 읽기
-  
-  if temp_sensor is not None:
-    print("현재 온도는 {}도 입니다.".format(temp_sensor))
-  else:
-    print("경고: 센서 연결 상태를 확인해 주세요!")
-  
-  # controller.check_temperature_and_act(temp_sensor, 4096)
-  controller.led_on()
+async def main():
+  print("Task 시작")
+  asyncio.create_task(step_motor_controller.motor_task())
 
-  time.sleep(1) 
+  print("1차 이동 시작")
+  step_motor_controller.move(200, direction=1)   # 왼쪽
+  # await asyncio.sleep(2)    # 필요할 때 사용 가능
+  await step_motor_controller.wait_until_done()
+  print("1차 이동 완료")
+
+  # await asyncio.sleep(2)    # 필요할 때 사용 가능
+  # await asyncio.sleep_ms(50)
+
+  print("2차 이동 시작")
+  # step_motor_controller.move(200, direction=1)   # 왼쪽
+  step_motor_controller.move(200, direction=-1)  # 오른쪽
+  await step_motor_controller.wait_until_done()
+  print("2차 이동 완료")
+
+asyncio.run(main())

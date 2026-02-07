@@ -1,3 +1,6 @@
+# await asyncio.sleep_ms() 을 위한 sleep_ms value
+SLEEP_MS = 10
+
 # Step Motor [28BYJ-48] + [ULN2003]
 
 STEPPER_PINS = [25, 26, 27, 32]

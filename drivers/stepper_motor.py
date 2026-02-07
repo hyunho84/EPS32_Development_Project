@@ -11,16 +11,10 @@ class StepperMotor:
       self.pins.append(Pin(pin, Pin.OUT))
       self.delay_ms = STEP_DELAY_MS
   
-  def step(self, step_index):
+  def motor_step(self, step_index):
     for pin, value in zip(self.pins, STEP_SEQUENCE[step_index]):
       pin.value(value)
-
-  def rotate_left(self, steps):
-    for i in range(steps):
-      self.step(i % len(STEP_SEQUENCE))
-      time.sleep_ms(STEP_DELAY_MS)
-
-  def rotate_right(self, steps):
-    for i in range(steps):
-      self.step(-i % len(STEP_SEQUENCE))
-      time.sleep_ms(STEP_DELAY_MS)
+  
+  def motor_stop(self):
+    for pin in self.pins:
+      pin.value(0)

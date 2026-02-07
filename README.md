@@ -8,27 +8,25 @@ ESP32 + MicroPython 기반 임베디드 프로젝트입니다.
 
 ## 📁 Project Structure
 
-```text
 project/
 │
-├─ app/            # 애플리케이션 실행 흐름
-│   └─ main.py
+├─ app/ # 애플리케이션 실행 흐름
+│ └─ main.py
 │
-├─ drivers/        # 하드웨어 제어 (GPIO, ADC, PWM 등)
-│   ├─ temp_sensor.py
-│   └─ stepper_motor.py
+├─ drivers/ # 하드웨어 제어 (GPIO, ADC, PWM 등)
+│ ├─ temp_sensor.py
+│ └─ stepper_motor.py
 │
-├─ services/       # 로직 / 제어 / 정책
-│   └─ controller.py
+├─ services/ # 로직 / 제어 / 정책
+│ ├─ motor_controller.py
+│ ├─ led_controller.py
+│ ├─ temp_controller.py
+│ └─ robot_controller.py ← 조율만
 │
-├─ config/         # 설정값 (핀 번호, 임계값 등)
-│   └─ settings.py
+├─ config/ # 설정값 (핀 번호, 임계값 등)
+│ └─ settings.py
 │
-├─ tests/          # 개별 기능 테스트
-│   └─ test_temp.py
-│
-└─ README.md
-```
+└── tests/ # 개별 기능 테스트
 
 📌 Folder Responsibilities
 drivers/
